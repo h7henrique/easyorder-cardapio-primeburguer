@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>EasyOrder • Prime Burger</title>
+    <title>EasyOrder • Cardápio Premium</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
@@ -1380,6 +1380,11 @@
         let allProducts = [];
         let heroIndex = 0;
 
+        // Loja padrão para teste. Depois você pode trocar pelo slug da URL.
+        const LOJA_ID = 'dd9babf6-ffff-4dce-a8b7-bba7cab836f0';
+        const LOJA_SLUG = new URLSearchParams(window.location.search).get('loja') || 'prime-burger';
+        let LOJA_ATUAL = null;
+
         const MENU_FALLBACK = [
             { id: 101, name: 'Smash Clássico', price: 22.00, desc: 'Pão brioche, dois smash burgers, cheddar e molho especial da casa.', img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80', category: 'Smash', badge: 'Mais pedido', prep: '25-30 min', rate: '4.9' },
             { id: 102, name: 'Smash Bacon', price: 27.00, desc: 'Dois hambúrgueres smash, queijo derretido, bacon crocante e molho especial.', img: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=900&q=80', category: 'Smash', badge: 'Bacon', prep: '25-30 min', rate: '4.8' },
@@ -1448,14 +1453,39 @@
                 return renderMenu(allProducts);
             }
 
-            const { data, error } = await db.from('produtos').select('*').eq('available', true);
-            if (error || !data || data.length === 0) {
-                allProducts = MENU_FALLBACK;
-                return renderMenu(allProducts);
+            // 1. Busca a loja pelo slug da URL: ?loja=prime-burger
+            let lojaIdParaProdutos = LOJA_ID;
+
+            try {
+                const { data: lojaData, error: lojaError } = await db
+                    .from('lojas')
+                    .select('*')
+                    .eq('slug', LOJA_SLUG)
+                    .maybeSingle();
+
+                if (!lojaError && lojaData) {
+                    LOJA_ATUAL = lojaData;
+                    lojaIdParaProdutos = lojaData.id;
+
+                    document.querySelector('.store-name').textContent = lojaData.nome || 'Minha loja';
+
+                    if (lojaData.logo_url) {
+                        document.querySelector('.store-logo').src = lojaData.logo_url;
+                    }
+                }
+            } catch (e) {
+                console.warn('Não foi possível carregar loja pelo slug. Usando loja padrão.', e);
             }
 
-            const temAcai = data.some(p => (p.name || '').toLowerCase().includes('açaí') || (p.name || '').toLowerCase().includes('acai'));
-            if (temAcai) {
+            // 2. Busca somente produtos da loja certa
+            const { data, error } = await db
+                .from('produtos')
+                .select('*')
+                .eq('loja_id', lojaIdParaProdutos)
+                .eq('available', true)
+                .order('id', { ascending: false });
+
+            if (error || !data || data.length === 0) {
                 allProducts = MENU_FALLBACK;
                 return renderMenu(allProducts);
             }
@@ -1693,19 +1723,30 @@
 
             if (db) {
                 try {
-                    await db.from('pedidos').insert([{
-                        id: idPedido,
+                    const lojaIdPedido = LOJA_ATUAL?.id || LOJA_ID;
+
+                    const { error } = await db.from('pedidos').insert([{
+                        loja_id: lojaIdPedido,
                         cliente_nome: nome,
                         cliente_zap: zap,
                         endereco: fullAddress,
-                        itens,
-                        total,
+                        itens: itens,
+                        subtotal: subtotal,
+                        taxa_entrega: TAXA_ENTREGA,
+                        total: total,
                         metodo_pag: pgto,
+                        pagamento_status: pgto === 'Pix' ? 'pendente' : 'na_entrega',
                         obs: troco,
                         status: 'pendente'
                     }]);
+
+                    if (error) throw error;
                 } catch (e) {
                     console.error('Erro ao salvar no banco:', e);
+                    alert('Erro ao salvar pedido no banco. Verifique loja_id, endereço e permissões.');
+                    btn.disabled = false;
+                    btn.innerHTML = original;
+                    return;
                 }
             }
 
