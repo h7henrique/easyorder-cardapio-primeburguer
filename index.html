@@ -1138,55 +1138,229 @@
         </header>
 
         <main class="page">
+
+            <style>
+                /* HERO DO CARDÁPIO - visual limpo, estilo app de delivery */
+                .hero-card {
+                    position: relative;
+                    width: 100%;
+                    min-height: 214px;
+                    border-radius: 28px;
+                    overflow: hidden;
+                    background: #111;
+                    box-shadow: var(--shadow-md);
+                    margin-bottom: 14px;
+                }
+
+                .hero-track {
+                    display: flex;
+                    width: 400%;
+                    height: 100%;
+                    transition: transform .7s cubic-bezier(.22, 1, .36, 1);
+                }
+
+                .hero-slide {
+                    position: relative;
+                    flex: 0 0 25%;
+                    min-height: 214px;
+                    overflow: hidden;
+                    background: #111;
+                    color: #fff;
+                }
+
+                .hero-figure {
+                    position: absolute;
+                    inset: 0;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    filter: none;
+                    border-radius: 0;
+                    z-index: 1;
+                }
+
+                .hero-slide::after {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    z-index: 2;
+                    background: linear-gradient(
+                        90deg,
+                        rgba(0, 0, 0, .84) 0%,
+                        rgba(0, 0, 0, .58) 48%,
+                        rgba(0, 0, 0, .12) 100%
+                    );
+                }
+
+                .hero-content {
+                    position: relative;
+                    z-index: 3;
+                    height: 100%;
+                    max-width: 68%;
+                    padding: 24px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    color: #fff;
+                }
+
+                .hero-badge {
+                    width: fit-content;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 7px;
+                    padding: 7px 12px;
+                    border-radius: 999px;
+                    background: var(--primary);
+                    color: #fff;
+                    border: none;
+                    font-size: 11px;
+                    font-weight: 900;
+                    margin-bottom: 10px;
+                    box-shadow: 0 10px 20px rgba(234, 29, 44, .26);
+                }
+
+                .hero-title {
+                    max-width: 360px;
+                    font-size: 27px;
+                    line-height: .98;
+                    letter-spacing: -.04em;
+                    font-weight: 900;
+                    margin-bottom: 8px;
+                }
+
+                .hero-text {
+                    max-width: 330px;
+                    font-size: 13px;
+                    line-height: 1.45;
+                    color: rgba(255, 255, 255, .88);
+                    font-weight: 600;
+                    margin-bottom: 13px;
+                    opacity: 1;
+                }
+
+                .hero-price {
+                    width: fit-content;
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 8px 12px;
+                    border-radius: 999px;
+                    background: rgba(255, 255, 255, .96);
+                    color: #15171c;
+                    font-size: 15px;
+                    font-weight: 900;
+                    box-shadow: 0 10px 20px rgba(0, 0, 0, .16);
+                }
+
+                .hero-dots {
+                    position: absolute;
+                    left: 24px;
+                    bottom: 16px;
+                    display: flex;
+                    gap: 8px;
+                    z-index: 4;
+                }
+
+                .hero-dot {
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 999px;
+                    background: rgba(255, 255, 255, .48);
+                    transition: .3s ease;
+                }
+
+                .hero-dot.active {
+                    width: 24px;
+                    background: #fff;
+                }
+
+                @media (max-width: 640px) {
+                    .hero-card,
+                    .hero-slide {
+                        min-height: 190px;
+                    }
+
+                    .hero-content {
+                        max-width: 72%;
+                        padding: 18px;
+                    }
+
+                    .hero-title {
+                        font-size: 22px;
+                    }
+
+                    .hero-text {
+                        font-size: 12px;
+                        max-width: 270px;
+                    }
+
+                    .hero-price {
+                        font-size: 14px;
+                        padding: 7px 11px;
+                    }
+
+                    .hero-dots {
+                        left: 18px;
+                        bottom: 12px;
+                    }
+                }
+            </style>
+
             <section class="hero-card">
                 <div class="hero-track" id="hero-track">
+
                     <div class="hero-slide slide-1">
-                        <div class="hero-content">
-                            <div class="hero-badge"><i class="fa-solid fa-fire"></i> Mais vendido</div>
-                            <div class="hero-title">Smash duplo com muito sabor e visual de app premium</div>
-                            <div class="hero-text">Banners grandes, chamativos e com foco real em conversão para deixar
-                                seu cardápio muito mais comercial.</div>
-                        </div>
                         <img class="hero-figure"
                             src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80"
-                            alt="Banner hambúrguer">
+                            alt="Smash Duplo Artesanal">
+
+                        <div class="hero-content">
+                            <div class="hero-badge"><i class="fa-solid fa-fire"></i> Mais pedido</div>
+                            <div class="hero-title">Smash Duplo</div>
+                            <div class="hero-text">Dois smash burgers, cheddar cremoso, bacon crocante e molho especial da casa.</div>
+                            <div class="hero-price">R$ 29,90</div>
+                        </div>
                     </div>
 
                     <div class="hero-slide slide-2">
-                        <div class="hero-content">
-                            <div class="hero-badge"><i class="fa-solid fa-bolt"></i> Oferta relâmpago</div>
-                            <div class="hero-title">Combo com batata e refri pra vender mais hoje</div>
-                            <div class="hero-text">Use esse espaço para impulsionar combos, ticket médio e promoções sem
-                                depender de marketplace.</div>
-                        </div>
                         <img class="hero-figure"
                             src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?auto=format&fit=crop&w=900&q=80"
-                            alt="Banner combo">
+                            alt="Combo Smash com batata e refrigerante">
+
+                        <div class="hero-content">
+                            <div class="hero-badge"><i class="fa-solid fa-bolt"></i> Combo</div>
+                            <div class="hero-title">Smash + Batata</div>
+                            <div class="hero-text">Burger artesanal, batata crocante e refrigerante gelado para completar seu pedido.</div>
+                            <div class="hero-price">R$ 39,90</div>
+                        </div>
                     </div>
 
                     <div class="hero-slide slide-3">
-                        <div class="hero-content">
-                            <div class="hero-badge"><i class="fa-solid fa-star"></i> Destaque do dia</div>
-                            <div class="hero-title">Peça direto no seu link e ganhe mais em cada pedido</div>
-                            <div class="hero-text">Estrutura visual mais forte para destacar promoções, entrega rápida e
-                                valor percebido do seu cardápio.</div>
-                        </div>
                         <img class="hero-figure"
                             src="https://images.unsplash.com/photo-1585238342024-78d387f4a707?auto=format&fit=crop&w=900&q=80"
-                            alt="Banner delivery">
+                            alt="Burger Premium da Casa">
+
+                        <div class="hero-content">
+                            <div class="hero-badge"><i class="fa-solid fa-star"></i> Premium</div>
+                            <div class="hero-title">Burger da Casa</div>
+                            <div class="hero-text">Pão brioche, carne suculenta, queijo derretido e molho artesanal exclusivo.</div>
+                            <div class="hero-price">R$ 34,90</div>
+                        </div>
                     </div>
 
                     <div class="hero-slide slide-4">
-                        <div class="hero-content">
-                            <div class="hero-badge"><i class="fa-solid fa-motorcycle"></i> Entrega expressa</div>
-                            <div class="hero-title">Experiência melhor que muito app grande</div>
-                            <div class="hero-text">Mais impacto visual, mais fome, mais clique e mais chance do cliente
-                                finalizar o pedido.</div>
-                        </div>
                         <img class="hero-figure"
                             src="https://images.unsplash.com/photo-1520072959219-c595dc870360?auto=format&fit=crop&w=900&q=80"
-                            alt="Banner moto delivery">
+                            alt="Delivery rápido">
+
+                        <div class="hero-content">
+                            <div class="hero-badge"><i class="fa-solid fa-motorcycle"></i> Delivery</div>
+                            <div class="hero-title">Entrega rápida</div>
+                            <div class="hero-text">Peça direto no cardápio online da loja e receba em casa com praticidade.</div>
+                            <div class="hero-price">20-40 min</div>
+                        </div>
                     </div>
+
                 </div>
 
                 <div class="hero-dots" id="hero-dots">
@@ -1202,13 +1376,10 @@
                     <small>Tempo médio</small>
                     <strong>25-35 min</strong>
                 </div>
-                <div class="quick-card">
-                    <small>Entrega</small>
-                    <strong>R$ 5,00 fixo</strong>
-                </div>
+                
                 <div class="quick-card">
                     <small>Destaque</small>
-                    <strong>Sem taxa por pedido</strong>
+                    <strong>Qualidade premium</strong>
                 </div>
             </section>
 
@@ -1227,13 +1398,13 @@
 
             <div class="promo-row">
                 <div class="mini-banner hot">
-                    <small>Venda mais</small>
-                    <strong>Empurre combos e aumente o ticket médio com banners fortes</strong>
+                   
+                    <strong>Combos especiais preparados pra matar sua fome</strong>
                     <i class="fa-solid fa-bullhorn"></i>
                 </div>
                 <div class="mini-banner dark">
-                    <small>Seu canal próprio</small>
-                    <strong>Receba pedidos direto no seu link com visual de app premium</strong>
+                   
+                    <strong>Seu lanche favorito entregue quentinho na sua casa</strong>
                     <i class="fa-solid fa-store"></i>
                 </div>
             </div>
@@ -1380,11 +1551,6 @@
         let allProducts = [];
         let heroIndex = 0;
 
-        // Loja padrão para teste. Depois você pode trocar pelo slug da URL.
-        const LOJA_ID = 'dd9babf6-ffff-4dce-a8b7-bba7cab836f0';
-        const LOJA_SLUG = new URLSearchParams(window.location.search).get('loja') || 'prime-burger';
-        let LOJA_ATUAL = null;
-
         const MENU_FALLBACK = [
             { id: 101, name: 'Smash Clássico', price: 22.00, desc: 'Pão brioche, dois smash burgers, cheddar e molho especial da casa.', img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80', category: 'Smash', badge: 'Mais pedido', prep: '25-30 min', rate: '4.9' },
             { id: 102, name: 'Smash Bacon', price: 27.00, desc: 'Dois hambúrgueres smash, queijo derretido, bacon crocante e molho especial.', img: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=900&q=80', category: 'Smash', badge: 'Bacon', prep: '25-30 min', rate: '4.8' },
@@ -1453,39 +1619,14 @@
                 return renderMenu(allProducts);
             }
 
-            // 1. Busca a loja pelo slug da URL: ?loja=prime-burger
-            let lojaIdParaProdutos = LOJA_ID;
-
-            try {
-                const { data: lojaData, error: lojaError } = await db
-                    .from('lojas')
-                    .select('*')
-                    .eq('slug', LOJA_SLUG)
-                    .maybeSingle();
-
-                if (!lojaError && lojaData) {
-                    LOJA_ATUAL = lojaData;
-                    lojaIdParaProdutos = lojaData.id;
-
-                    document.querySelector('.store-name').textContent = lojaData.nome || 'Minha loja';
-
-                    if (lojaData.logo_url) {
-                        document.querySelector('.store-logo').src = lojaData.logo_url;
-                    }
-                }
-            } catch (e) {
-                console.warn('Não foi possível carregar loja pelo slug. Usando loja padrão.', e);
+            const { data, error } = await db.from('produtos').select('*').eq('available', true);
+            if (error || !data || data.length === 0) {
+                allProducts = MENU_FALLBACK;
+                return renderMenu(allProducts);
             }
 
-            // 2. Busca somente produtos da loja certa
-            const { data, error } = await db
-                .from('produtos')
-                .select('*')
-                .eq('loja_id', lojaIdParaProdutos)
-                .eq('available', true)
-                .order('id', { ascending: false });
-
-            if (error || !data || data.length === 0) {
+            const temAcai = data.some(p => (p.name || '').toLowerCase().includes('açaí') || (p.name || '').toLowerCase().includes('acai'));
+            if (temAcai) {
                 allProducts = MENU_FALLBACK;
                 return renderMenu(allProducts);
             }
@@ -1723,30 +1864,19 @@
 
             if (db) {
                 try {
-                    const lojaIdPedido = LOJA_ATUAL?.id || LOJA_ID;
-
-                    const { error } = await db.from('pedidos').insert([{
-                        loja_id: lojaIdPedido,
+                    await db.from('pedidos').insert([{
+                        id: idPedido,
                         cliente_nome: nome,
                         cliente_zap: zap,
                         endereco: fullAddress,
-                        itens: itens,
-                        subtotal: subtotal,
-                        taxa_entrega: TAXA_ENTREGA,
-                        total: total,
+                        itens,
+                        total,
                         metodo_pag: pgto,
-                        pagamento_status: pgto === 'Pix' ? 'pendente' : 'na_entrega',
                         obs: troco,
                         status: 'pendente'
                     }]);
-
-                    if (error) throw error;
                 } catch (e) {
                     console.error('Erro ao salvar no banco:', e);
-                    alert('Erro ao salvar pedido no banco. Verifique loja_id, endereço e permissões.');
-                    btn.disabled = false;
-                    btn.innerHTML = original;
-                    return;
                 }
             }
 
