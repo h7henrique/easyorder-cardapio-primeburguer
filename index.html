@@ -1862,23 +1862,34 @@
             btn.disabled = true;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando...';
 
-            if (db) {
-                try {
-                    await db.from('pedidos').insert([{
-                        id: idPedido,
-                        cliente_nome: nome,
-                        cliente_zap: zap,
-                        endereco: fullAddress,
-                        itens,
-                        total,
-                        metodo_pag: pgto,
-                        obs: troco,
-                        status: 'pendente'
-                    }]);
-                } catch (e) {
-                    console.error('Erro ao salvar no banco:', e);
-                }
-            }
+           if (db) {
+    try {
+        await db.from('pedidos').insert([{
+            id: idPedido,
+
+            loja_id: 'dd9babf6-ffff-4dce-a8b7-bba7cab836f0',
+
+            cliente_nome: nome,
+            cliente_zap: zap,
+            endereco: fullAddress,
+
+            itens,
+
+            subtotal: subtotal,
+            taxa_entrega: TAXA_ENTREGA,
+            total: total,
+
+            metodo_pag: pgto,
+            obs: troco,
+
+            status: 'pendente',
+
+            created_at: new Date().toISOString()
+        }]);
+    } catch (e) {
+        console.error('Erro ao salvar no banco:', e);
+    }
+}
 
             if (pgto === 'Pix') {
                 try {
